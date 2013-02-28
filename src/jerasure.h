@@ -53,6 +53,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "galois.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* ------------------------------------------------------------ */
 /* In all of the routines below:
 
@@ -469,5 +473,9 @@ int *jerasure_matrix_multiply(int *m1, int *m2, int r1, int c1, int r2, int c2, 
  * @endcode
  */
 void jerasure_get_stats(double *fill_in);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

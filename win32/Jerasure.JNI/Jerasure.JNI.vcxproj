@@ -143,6 +143,7 @@
     <ClInclude Include="..\..\jni\eu_vandertil_jerasure_jni_Decoding.h" />
     <ClInclude Include="..\..\jni\eu_vandertil_jerasure_jni_Encoding.h" />
     <ClInclude Include="..\..\jni\eu_vandertil_jerasure_jni_ReedSolomon.h" />
+    <ClInclude Include="cleanup_helpers.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jerasure.Library\Jerasure.Library.vcxproj">
@@ -153,6 +154,7 @@
     <ClCompile Include="..\..\jni\eu_vandertil_jerasure_jni_Decoding.cpp" />
     <ClCompile Include="..\..\jni\eu_vandertil_jerasure_jni_Encoding.cpp" />
     <ClCompile Include="..\..\jni\eu_vandertil_jerasure_jni_ReedSolomon.cpp" />
+    <ClCompile Include="cleanup_helpers.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

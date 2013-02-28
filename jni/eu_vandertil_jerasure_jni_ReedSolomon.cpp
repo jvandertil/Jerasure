@@ -1,7 +1,9 @@
+#include <stdlib.h>
+
 #include "eu_vandertil_jerasure_jni_ReedSolomon.h"
 #include "reed_sol.h"
 
-jintArray tojintArray(JNIEnv *env, int* contents, int length)
+jintArray copyTojintArray(JNIEnv *env, int* contents, int length)
 {
 	jintArray result = env->NewIntArray(length);
 	env->SetIntArrayRegion(result, 0, length, (jint*)contents);
@@ -18,7 +20,11 @@ JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_ReedSolomon_getVander
 {
 	int* matrix = reed_sol_vandermonde_coding_matrix(dataDevices, codingDevices, wordSize);
 
-	return tojintArray(env, matrix, (codingDevices * dataDevices));
+	jintArray result = copyTojintArray(env, matrix, (codingDevices * dataDevices));
+
+	free(matrix);
+
+	return result;
 }
 
 /*
@@ -31,7 +37,10 @@ JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_ReedSolomon_getExtend
 {
 	int* matrix = reed_sol_extended_vandermonde_matrix(rows, cols, wordSize);
 
-	return tojintArray(env, matrix, (rows * cols)); 
+	jintArray result = copyTojintArray(env, matrix, (rows * cols)); 
+	free(matrix);
+
+	return result;
 }
 
 /*
@@ -44,5 +53,8 @@ JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_ReedSolomon_getBigVan
 {
 	int* matrix = reed_sol_big_vandermonde_distribution_matrix(rows, cols, wordSize);
 
-	return tojintArray(env, matrix, (rows * cols)); 
+	jintArray result = copyTojintArray(env, matrix, (rows * cols));
+	free(matrix);
+
+	return result;
 }

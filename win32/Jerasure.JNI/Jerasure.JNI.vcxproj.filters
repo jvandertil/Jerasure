@@ -27,6 +27,9 @@
     <ClInclude Include="..\..\jni\eu_vandertil_jerasure_jni_ReedSolomon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cleanup_helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\jni\eu_vandertil_jerasure_jni_Decoding.cpp">
@@ -36,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\jni\eu_vandertil_jerasure_jni_ReedSolomon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cleanup_helpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

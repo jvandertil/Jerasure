@@ -54,6 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "jerasure.h"
 
 #define talloc(type, num) (type *) malloc(sizeof(type)*(num))
+#define bzero(memory, size) memset(memory, 0, size)
 
 static double jerasure_total_xor_bytes = 0;
 static double jerasure_total_gf_bytes = 0;

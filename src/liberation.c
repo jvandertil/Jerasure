@@ -56,6 +56,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "liberation.h"
 
 #define talloc(type, num) (type *) malloc(sizeof(type)*(num))
+#define bzero(memory, size) memset(memory, 0, size)
 
 int *liberation_coding_bitmatrix(int k, int w)
 {

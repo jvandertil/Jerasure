@@ -15,3 +15,4 @@ These were added by Jos van der Til
 
 ## Hints ##
 It is assumed that GNU make is being used.
+When using the JNI coupling, be sure to include the JAR file in your java.library.path or set the library path using: java -Djava.library.path={path}

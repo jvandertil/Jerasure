@@ -25,3 +25,16 @@ jint throwOutOfMemoryError(JNIEnv *env, char *message) {
 
 	return env->ThrowNew(exClass, message);
 }
+
+jint throwIllegalArgumentException(JNIEnv *env, char* message) {
+	jclass exClass;
+	char* className = "java/lang/IllegalArgumentException";
+
+	exClass = env->FindClass(className);
+	if(exClass == NULL)
+	{
+		return throwNoClassDefError(env, className);
+	}
+
+	return env->ThrowNew(exClass, message);
+}

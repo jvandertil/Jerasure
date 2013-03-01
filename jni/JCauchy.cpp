@@ -22,6 +22,8 @@ JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_Cauchy_cauchy_1origin
 	jintArray result = env->NewIntArray(jk*jm);
 	if(result != NULL) {
 		env->SetIntArrayRegion(result, 0, jk*jm, (jint*)matrix);
+	} else {
+		throwOutOfMemoryError(env, "Error allocating result array");
 	}
 
 	free(matrix);
@@ -55,6 +57,8 @@ JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_Cauchy_cauchy_1xy_1co
 	jintArray result = env->NewIntArray(k*m);
 	if(result != NULL) {
 		env->SetIntArrayRegion(result, 0, k*m, (jint*)matrix);
+	} else {
+		throwOutOfMemoryError(env, "Error allocating result array");
 	}
 
 	env->ReleaseIntArrayElements(jx, x, NULL);
@@ -103,6 +107,8 @@ JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_Cauchy_cauchy_1good_1
 
 	if(result != NULL) {
 		env->SetIntArrayRegion(result, 0, jk*jm, (jint*)matrix);
+	} else {
+		throwOutOfMemoryError(env, "Error allocating result array");
 	}
 
 	free(matrix);

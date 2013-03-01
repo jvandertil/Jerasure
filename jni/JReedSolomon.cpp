@@ -24,6 +24,8 @@ JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_ReedSolomon_reed_1sol
 	jintArray result = env->NewIntArray(m*k);
 	if(result != NULL) {
 		env->SetIntArrayRegion(result, 0, m*k, (jint*)matrix);
+	} else {
+		throwOutOfMemoryError(env, "Error allocating result array");
 	}
 
 	free(matrix);
@@ -48,6 +50,8 @@ JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_ReedSolomon_reed_1sol
 	jintArray result = env->NewIntArray(rows*cols);
 	if(result != NULL) {
 		env->SetIntArrayRegion(result, 0, rows*cols, (jint*)matrix);
+	} else {
+		throwOutOfMemoryError(env, "Error allocating result array");
 	}
 
 	free(matrix);
@@ -72,6 +76,8 @@ JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_ReedSolomon_reed_1sol
 	jintArray result = env->NewIntArray(rows*cols);
 	if(result != NULL) {
 		env->SetIntArrayRegion(result, 0, rows*cols, (jint*)matrix);
+	} else {
+		throwOutOfMemoryError(env, "Error allocating result array");
 	}
 
 	free(matrix);
@@ -190,6 +196,8 @@ JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_ReedSolomon_reed_1sol
 	jintArray result = env->NewIntArray(2*k);
 	if(result != NULL) {
 		env->SetIntArrayRegion(result, 0, 2*k, (jint*)matrix);
+	} else {
+		throwOutOfMemoryError(env, "Error allocating result array");
 	}
 
 	free(matrix);

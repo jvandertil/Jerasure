@@ -1,4 +1,5 @@
 #include <jni.h>
 
-extern jint throwNoClassDefError(JNIEnv*, char *);
-extern jint throwOutOfMemoryError(JNIEnv*, char *);
+jint throwNoClassDefError(JNIEnv*, char *);
+jint throwOutOfMemoryError(JNIEnv*, char *);
+jint throwIllegalArgumentException(JNIEnv *env, char* message);

@@ -126,8 +126,8 @@ JNIEXPORT jboolean JNICALL Java_eu_vandertil_jerasure_jni_ReedSolomon_reed_1sol_
 	(JNIEnv *env, jclass clazz, jint k, jint w, jobjectArray jdata_ptrs, jobjectArray jcoding_ptrs, jint size)
 {
 	int result = 0;
-	jbyteArray *dataPtrs, *codingPtrs;
-	jbyte **data_ptrs, **coding_ptrs;
+	jbyteArray *dataPtrs = NULL, *codingPtrs  = NULL;
+	jbyte **data_ptrs = NULL, **coding_ptrs = NULL;
 
 	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, dataPtrs, data_ptrs, k);
 	bool getCodingDevices = getArrayOfByteArrays(env, &jcoding_ptrs, codingPtrs, coding_ptrs, 2);

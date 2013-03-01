@@ -10,23 +10,33 @@
 * Signature: (III)[I
 */
 JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_Cauchy_cauchy_1original_1coding_1matrix
-	(JNIEnv *env, jclass clazz, jint jk, jint jm, jint jw)
+	(JNIEnv *env, jclass clazz, jint k, jint m, jint w)
 {
-	int* matrix = cauchy_original_coding_matrix(jk, jm, jw);
+	bool outOfMemory = false;
+	jintArray result = NULL;
 
-	if(matrix == NULL) {
-		throwOutOfMemoryError(env, "Could not allocate memory for matrix.");
-		return NULL;
-	}
+	if (!(w < 31 && (k+m) > (1 << w))) { // from implementation.
+		int* matrix = cauchy_original_coding_matrix(k, m, w);
 
-	jintArray result = env->NewIntArray(jk*jm);
-	if(result != NULL) {
-		env->SetIntArrayRegion(result, 0, jk*jm, (jint*)matrix);
+		if(matrix != NULL) {
+			result = env->NewIntArray(k*m);
+			if(result != NULL) {
+				env->SetIntArrayRegion(result, 0, k*m, (jint*)matrix);
+			} else {
+				outOfMemory = true;
+			}
+		} else {
+			outOfMemory = true;
+		}
+
+		free(matrix);
 	} else {
-		throwOutOfMemoryError(env, "Error allocating result array");
+		throwIllegalArgumentException(env, "w < 31 && (k+m) > (1 << w)");
 	}
 
-	free(matrix);
+	if(outOfMemory) {
+		throwOutOfMemoryError(env, "Not enough free memory to complete");
+	}
 
 	return result;
 }
@@ -39,31 +49,38 @@ JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_Cauchy_cauchy_1origin
 JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_Cauchy_cauchy_1xy_1coding_1matrix
 	(JNIEnv *env, jclass clazz, jint k, jint m, jint w, jintArray jx, jintArray jy)
 {
+	bool outOfMemory = false;
+	jintArray result = NULL;
+
 	jint *x = env->GetIntArrayElements(jx, NULL);
 	jint *y = env->GetIntArrayElements(jy, NULL);
 
-	if(x == NULL || y == NULL) {
-		throwOutOfMemoryError(env, "Error getting x or y from Java");
-		return NULL;
-	}
+	if(x != NULL && y != NULL) {
+		int* matrix = cauchy_xy_coding_matrix(k,m,w, (int*)x, (int*)y);
 
-	int* matrix = cauchy_xy_coding_matrix(k,m,w, (int*)x, (int*)y);
+		if(matrix != NULL) {
+			result = env->NewIntArray(k*m);
+			if(result != NULL) {
+				env->SetIntArrayRegion(result, 0, k*m, (jint*)matrix);
+			} else {
+				outOfMemory = true;
+			}
 
-	if(matrix == NULL) {
-		throwOutOfMemoryError(env, "Could not allocate memory for matrix.");
-		return NULL;
-	}
+		} else {
+			outOfMemory = true;
+		}
 
-	jintArray result = env->NewIntArray(k*m);
-	if(result != NULL) {
-		env->SetIntArrayRegion(result, 0, k*m, (jint*)matrix);
+		free(matrix);
 	} else {
-		throwOutOfMemoryError(env, "Error allocating result array");
+		outOfMemory = true;
+	}
+
+	if(outOfMemory) {
+		throwOutOfMemoryError(env, "");
 	}
 
 	env->ReleaseIntArrayElements(jx, x, NULL);
 	env->ReleaseIntArrayElements(jy, y, NULL);
-	free(matrix);
 
 	return result;
 }
@@ -77,7 +94,6 @@ JNIEXPORT void JNICALL Java_eu_vandertil_jerasure_jni_Cauchy_cauchy_1improve_1co
 	(JNIEnv *env, jclass clazz, jint k, jint m, jint w, jintArray jmatrix)
 {
 	jint* matrix = env->GetIntArrayElements(jmatrix, NULL);
-
 	if(matrix == NULL) {
 		throwOutOfMemoryError(env, "Error getting matrix from Java");
 		return;
@@ -94,21 +110,19 @@ JNIEXPORT void JNICALL Java_eu_vandertil_jerasure_jni_Cauchy_cauchy_1improve_1co
 * Signature: (III)[I
 */
 JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_Cauchy_cauchy_1good_1general_1coding_1matrix
-	(JNIEnv *env, jclass clazz, jint jk, jint jm, jint jw)
+	(JNIEnv *env, jclass clazz, jint k, jint m, jint w)
 {
-	int* matrix = cauchy_good_general_coding_matrix(jk, jm, jw);
+	jintArray result = NULL;
+	int* matrix = cauchy_good_general_coding_matrix(k, m, w);
 
-	if(matrix == NULL) {
-		throwOutOfMemoryError(env, "Error allocating memory for matrix");
-		return NULL;
-	}
+	if(matrix != NULL) {
+		result = env->NewIntArray(k*m);
 
-	jintArray result = env->NewIntArray(jk*jm);
-
-	if(result != NULL) {
-		env->SetIntArrayRegion(result, 0, jk*jm, (jint*)matrix);
-	} else {
-		throwOutOfMemoryError(env, "Error allocating result array");
+		if(result != NULL) {
+			env->SetIntArrayRegion(result, 0, k*m, (jint*)matrix);
+		} else {
+			throwOutOfMemoryError(env, "Error allocating result array");
+		}
 	}
 
 	free(matrix);

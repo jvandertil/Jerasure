@@ -220,12 +220,10 @@ JNIEXPORT void JNICALL Java_eu_vandertil_jerasure_jni_Galois_galois_1w08_1region
 	if(jr2 != NULL)
 	{
 		r2 = env->GetByteArrayElements(jr2, NULL);
-
 		if(r2 == NULL) {
 			throwOutOfMemoryError(env, "Error getting r2 from Java");
 
 			env->ReleaseByteArrayElements(jregion, region, NULL);
-
 			return;
 		}
 	}

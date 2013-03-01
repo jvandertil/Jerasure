@@ -18,24 +18,42 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\jni\eu_vandertil_jerasure_jni_Decoding.h">
+    <ClInclude Include="..\..\jni\JCauchy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\jni\eu_vandertil_jerasure_jni_Encoding.h">
+    <ClInclude Include="..\..\jni\JGalois.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\jni\eu_vandertil_jerasure_jni_ReedSolomon.h">
+    <ClInclude Include="..\..\jni\JJerasure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\JLiberation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\JReedSolomon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni\javautility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\jni\eu_vandertil_jerasure_jni_Decoding.cpp">
+    <ClCompile Include="..\..\jni\JCauchy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\jni\eu_vandertil_jerasure_jni_Encoding.cpp">
+    <ClCompile Include="..\..\jni\JGalois.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\jni\eu_vandertil_jerasure_jni_ReedSolomon.cpp">
+    <ClCompile Include="..\..\jni\JJerasure.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\JLiberation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\JReedSolomon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\jni\javautility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

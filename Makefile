@@ -3,10 +3,11 @@ BINDIR=${PREFIX}/bin
 LIBDIR=${PREFIX}/lib
 INCDIR=${PREFIX}/include
 
-all: lib/libJerasure.so
+all: lib/libJerasure.so lib/libJerasure.jni.so
 	make -C Examples
 
 clean:
+	make -C jni clean
 	make -C src clean
 	make -C Examples clean
 	rm -rf include
@@ -18,3 +19,6 @@ install: lib/libJerasure.so
 
 lib/libJerasure.so:
 	make -C src
+
+lib/libJerasure.jni.so:
+	make -C jni

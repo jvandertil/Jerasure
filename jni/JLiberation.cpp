@@ -4,93 +4,112 @@
 #include "liberation.h"
 
 /*
- * Class:     eu_vandertil_jerasure_jni_Liberation
- * Method:    liberation_coding_bitmatrix
- * Signature: (II)[I
- */
+* Class:     eu_vandertil_jerasure_jni_Liberation
+* Method:    liberation_coding_bitmatrix
+* Signature: (II)[I
+*/
 JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_Liberation_liberation_1coding_1bitmatrix
-  (JNIEnv *env, jclass clazz, jint k, jint w)
+	(JNIEnv *env, jclass clazz, jint k, jint w)
 {
-	 if(k > w){
-		throwIllegalArgumentException(env, "k > w");
-		return NULL;
-	}
+	bool outOfMemory = false;
+	jintArray result = NULL;
 
-	int* matrix = liberation_coding_bitmatrix(k,w);
+	if(k <= w) {
+		int* matrix = liberation_coding_bitmatrix(k,w);
+		if(matrix != NULL) {
+			result = env->NewIntArray(2*k*w*w);
 
-	if(matrix == NULL && k <= w) {
-		throwOutOfMemoryError(env, "Error creating matrix");
-		return NULL;
-	}
+			if(result != NULL) {
+				env->SetIntArrayRegion(result, 0, 2*k*w*w, (jint*)matrix);
+			} else {
+				outOfMemory = true;
+			}
+		} else {
+			outOfMemory = true;
+		}
 
-	jintArray result = env->NewIntArray(2*k*w*w);
-	if(result != NULL) {
-		env->SetIntArrayRegion(result, 0, 2*k*w*w, (jint*)matrix);
+		free(matrix);
 	} else {
-		throwOutOfMemoryError(env, "Error allocating result array");
+		throwIllegalArgumentException(env, "k > w");
 	}
 
-	free(matrix);
+	if(outOfMemory) {
+		throwOutOfMemoryError(env, "Could not allocate enough memory.");
+	}
+
 	return result;
 }
 
 /*
- * Class:     eu_vandertil_jerasure_jni_Liberation
- * Method:    liber8tion_coding_bitmatrix
- * Signature: (I)[I
- */
+* Class:     eu_vandertil_jerasure_jni_Liberation
+* Method:    liber8tion_coding_bitmatrix
+* Signature: (I)[I
+*/
 JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_Liberation_liber8tion_1coding_1bitmatrix
-  (JNIEnv *env, jclass clazz, jint k)
+	(JNIEnv *env, jclass clazz, jint k)
 {
-	if(k > 8) {
+	bool outOfMemory = false;
+	jintArray result = NULL;
+
+	if(k <= 8) {
+		int* matrix = liber8tion_coding_bitmatrix(k);
+
+		if(matrix != NULL) {
+			result = env->NewIntArray(2*k*8*8);
+			if(result != NULL) {
+				env->SetIntArrayRegion(result, 0, 2*k*8*8, (jint*)matrix);
+			} else {
+				outOfMemory = true;
+			}
+		} else {
+			outOfMemory = true;
+		}
+
+		free(matrix);
+	} else {
 		throwIllegalArgumentException(env, "k > 8");
-		return NULL;
 	}
 
-	int* matrix = liber8tion_coding_bitmatrix(k);
-	if(matrix == NULL) {
-		throwOutOfMemoryError(env, "Error allocating matrix");
-		return NULL;
+	if(outOfMemory) {
+		throwOutOfMemoryError(env, "");
 	}
 
-	jintArray result = env->NewIntArray(2*k*8*8);
-	if(result != NULL) {
-		env->SetIntArrayRegion(result, 0, 2*k*8*8, (jint*)matrix);
-	}else {
-		throwOutOfMemoryError(env, "Error allocating result array");
-	}
-
-	free(matrix);
 	return result;
 }
 
 /*
- * Class:     eu_vandertil_jerasure_jni_Liberation
- * Method:    blaum_roth_coding_bitmatrix
- * Signature: (II)[I
- */
+* Class:     eu_vandertil_jerasure_jni_Liberation
+* Method:    blaum_roth_coding_bitmatrix
+* Signature: (II)[I
+*/
 JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_Liberation_blaum_1roth_1coding_1bitmatrix
-  (JNIEnv *env, jclass clazz, jint k, jint w)
+	(JNIEnv *env, jclass clazz, jint k, jint w)
 {
-	if(k > w) {
-		throwIllegalArgumentException(env, "k > w");
-		return NULL;
-	}
+	bool outOfMemory = false;
+	jintArray result = NULL;
 
-	int* matrix = blaum_roth_coding_bitmatrix(k, w);
+	if(k <= w) {
+		int* matrix = blaum_roth_coding_bitmatrix(k, w);
 
-	if(matrix == NULL) {
-		throwOutOfMemoryError(env, "Error allocating matrix");
-		return NULL;
-	}
+		if(matrix != NULL) {
+			result = env->NewIntArray(2*k*w*w);
+			if(result != NULL) {
+				env->SetIntArrayRegion(result, 0, 2*k*w*w, (jint*)matrix);
+			} else {
+				outOfMemory = true;
+			}
+		} else {
+			outOfMemory = true;
+		}
 
-	jintArray result = env->NewIntArray(2*k*w*w);
-	if(result != NULL) {
-		env->SetIntArrayRegion(result, 0, 2*k*w*w, (jint*)matrix);
+		free(matrix);
 	} else {
-		throwOutOfMemoryError(env, "Error allocating result array");
+		throwIllegalArgumentException(env, "k > w");
 	}
 
-	free(matrix);
+	if(outOfMemory){
+		throwOutOfMemoryError(env, "");
+	}
+
 	return result;
 }

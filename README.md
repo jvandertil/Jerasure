@@ -5,7 +5,7 @@ Catherine D. Schuman.  More details can be found at
 
 See technical report CS-08-627 for a description of the code.  
 
-There are four directories:
+The directories are as follows:
 
 * The src directory contains the jerasure code.
 * The Examples directory contains the example programs. 

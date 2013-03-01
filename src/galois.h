@@ -52,6 +52,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern int galois_single_multiply(int a, int b, int w);
 extern int galois_single_divide(int a, int b, int w);
 extern int galois_log(int value, int w);
@@ -108,4 +112,7 @@ void galois_w32_region_multiply(char *region,       /* Region to multiply */
                                                        Otherwise region is overwritten */
                                   int add);         /* If (r2 != NULL && add) the produce is XOR'd with r2 */
 
+#ifdef __cplusplus
+ }
+#endif
 #endif

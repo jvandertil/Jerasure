@@ -17,6 +17,8 @@ install: lib/libJerasure.so
 	mkdir -p ${INCDIR}/jerasure
 	cp include/* ${INCDIR}/jerasure
 
+jni: lib/libJerasure.jni.so
+
 lib/libJerasure.so:
 	make -C src
 

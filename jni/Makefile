@@ -13,7 +13,8 @@ all: ../lib/libJerasure.jni.so
 	$(CC) -shared -Wl,-soname,libJerasure.jni.s0.0 \
 		-o ../lib/libJerasure.jni.so.0 $(OBJS)
 
-clean: rm -f ../lib/libJerasure.jni.so* $(OBJS)
+clean: 
+	rm -f ../lib/libJerasure.jni.so* $(OBJS)
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) -I$(JNI_HEADERS_PATH) -I$(JNI_HEADERS_PATH)/linux -I ../include -fPIC -c $<

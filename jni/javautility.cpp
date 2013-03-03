@@ -1,7 +1,5 @@
 #include "javautility.h"
 
-//#define talloc(type, num) (type *) malloc(sizeof(type)*(num))
-
 jint throwNoClassDefError(JNIEnv *env, char *message) {
 	jclass exClass;
 	char *className = "java/lang/NoClassDefFoundError";

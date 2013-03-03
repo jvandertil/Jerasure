@@ -22,5 +22,5 @@ jni: lib/libJerasure.jni.so
 lib/libJerasure.so:
 	make -C src
 
-lib/libJerasure.jni.so:
+lib/libJerasure.jni.so: lib/libJerasure.so
 	make -C jni

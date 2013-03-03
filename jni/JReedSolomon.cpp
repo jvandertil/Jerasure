@@ -126,20 +126,22 @@ JNIEXPORT jboolean JNICALL Java_eu_vandertil_jerasure_jni_ReedSolomon_reed_1sol_
 	(JNIEnv *env, jclass clazz, jint k, jint w, jobjectArray jdata_ptrs, jobjectArray jcoding_ptrs, jint size)
 {
 	int result = 0;
-	jbyteArray *dataPtrs = NULL, *codingPtrs  = NULL;
-	jbyte **data_ptrs = NULL, **coding_ptrs = NULL;
+	std::vector<jbyteArray> dataPtrs;
+	std::vector<jbyteArray> codingPtrs;
+	std::vector<jbyte*> data_ptrs;
+	std::vector<jbyte*> coding_ptrs;
 
-	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, dataPtrs, data_ptrs, k);
-	bool getCodingDevices = getArrayOfByteArrays(env, &jcoding_ptrs, codingPtrs, coding_ptrs, 2);
+	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, &dataPtrs, &data_ptrs, k);
+	bool getCodingDevices = getArrayOfByteArrays(env, &jcoding_ptrs, &codingPtrs, &coding_ptrs, 2);
 
 	if(getDataDevices && getCodingDevices) {
-		result = reed_sol_r6_encode(k,w, (char**)data_ptrs, (char**)coding_ptrs,size);
+		result = reed_sol_r6_encode(k,w, (char**)&data_ptrs[0], (char**)&coding_ptrs[0],size);
 	} else {
 		throwOutOfMemoryError(env, "");
 	}
 
-	freeArrayOfByteArrays(env, dataPtrs, data_ptrs, k);
-	freeArrayOfByteArrays(env, codingPtrs, coding_ptrs, 2);
+	freeArrayOfByteArrays(env, &dataPtrs, &data_ptrs, k);
+	freeArrayOfByteArrays(env, &codingPtrs, &coding_ptrs, 2);
 
 	if(result == 1)
 		return JNI_TRUE;

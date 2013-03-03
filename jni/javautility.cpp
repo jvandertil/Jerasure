@@ -1,8 +1,6 @@
-#include <string.h> //For memset
-#include <stdlib.h>
 #include "javautility.h"
 
-#define talloc(type, num) (type *) malloc(sizeof(type)*(num))
+//#define talloc(type, num) (type *) malloc(sizeof(type)*(num))
 
 jint throwNoClassDefError(JNIEnv *env, char *message) {
 	jclass exClass;
@@ -43,24 +41,19 @@ jint throwIllegalArgumentException(JNIEnv *env, char* message) {
 	return env->ThrowNew(exClass, message);
 }
 
-bool getArrayOfByteArrays(JNIEnv *env, jobjectArray* arrays, jbyteArray* arrayOfArrays, jbyte** resultData, int numArrays)
+bool getArrayOfByteArrays(JNIEnv *env, jobjectArray *arrays, std::vector<jbyteArray> *arrayOfArrays, std::vector<jbyte*> *resultData, int numArrays)
 {
-	arrayOfArrays = talloc(jbyteArray, numArrays);
-	resultData = talloc(jbyte*, numArrays);
-
-	// Clear values for safety.
-	memset(arrayOfArrays, NULL, numArrays);
-	memset(resultData, NULL, numArrays);
-
 	if(arrayOfArrays == NULL || resultData == NULL) {
 		freeArrayOfByteArrays(env, arrayOfArrays, resultData, 0);
 		return false;
 	}
 
 	for(int i = 0; i < numArrays; ++i) {
-		arrayOfArrays[i] = (jbyteArray)env->GetObjectArrayElement(*arrays, i);
-		resultData[i] = env->GetByteArrayElements(arrayOfArrays[i], NULL);
-		if(resultData[i] == NULL) {
+		jbyteArray array = (jbyteArray)env->GetObjectArrayElement(*arrays, i);
+		arrayOfArrays->push_back(array);
+		resultData->push_back(env->GetByteArrayElements(arrayOfArrays->back(), NULL));
+
+		if(resultData->back() == NULL) {
 			freeArrayOfByteArrays(env, arrayOfArrays, resultData, i);
 			return false;
 		}
@@ -72,16 +65,13 @@ bool getArrayOfByteArrays(JNIEnv *env, jobjectArray* arrays, jbyteArray* arrayOf
 /*
 * Can be used to clean up arrays retrieved from getArrayOfByteArrays()
 */
-void freeArrayOfByteArrays(JNIEnv *env, jbyteArray* arrayOfArrays, jbyte** resultData, int numArrays)
+void freeArrayOfByteArrays(JNIEnv *env, std::vector<jbyteArray> *arrayOfArrays, std::vector<jbyte*> *resultData, int numArrays)
 {
 	int i;
 	if(arrayOfArrays != NULL && resultData != NULL) {
 		for(i = 0; i < numArrays; ++i) {
-			env->ReleaseByteArrayElements(arrayOfArrays[i], resultData[i], NULL);
-			env->DeleteLocalRef(arrayOfArrays[i]);
+			env->ReleaseByteArrayElements(arrayOfArrays->at(i), resultData->at(i), NULL);
+			env->DeleteLocalRef(arrayOfArrays->at(i));
 		}
 	}
-
-	free(resultData);
-	free(arrayOfArrays);
 }

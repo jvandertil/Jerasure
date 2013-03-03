@@ -55,20 +55,21 @@ JNIEXPORT jintArray JNICALL Java_eu_vandertil_jerasure_jni_Jerasure_jerasure_1ma
 JNIEXPORT void JNICALL Java_eu_vandertil_jerasure_jni_Jerasure_jerasure_1do_1parity
 	(JNIEnv *env, jclass clazz, jint k, jobjectArray jdata_ptrs, jbyteArray jparity_ptr, jint size)
 {
-	jbyte* parity_ptr = NULL, **data_ptrs = NULL; 
-	jbyteArray* dataPtrs = NULL;
+	jbyte* parity_ptr = NULL;
+	std::vector<jbyteArray> dataPtrs;
+	std::vector<jbyte*> data_ptrs;
 
 	parity_ptr = env->GetByteArrayElements(jparity_ptr, NULL);
-	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, dataPtrs, data_ptrs, k);
+	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, &dataPtrs, &data_ptrs, k);
 
 	if(parity_ptr != NULL && getDataDevices) {
-		jerasure_do_parity(k, (char**)data_ptrs, (char*)parity_ptr, size);
+		jerasure_do_parity(k, (char**)&data_ptrs[0], (char*)&parity_ptr[0], size);
 	} else {
 		throwOutOfMemoryError(env, "Error allocating memory for data");
 	}
 
 	env->ReleaseByteArrayElements(jparity_ptr, parity_ptr, NULL);
-	freeArrayOfByteArrays(env, dataPtrs, data_ptrs, k);
+	freeArrayOfByteArrays(env, &dataPtrs, &data_ptrs, k);
 }
 
 /*
@@ -80,21 +81,23 @@ JNIEXPORT void JNICALL Java_eu_vandertil_jerasure_jni_Jerasure_jerasure_1matrix_
 	(JNIEnv *env, jclass clazz, jint k, jint m, jint w, jintArray jmatrix, jobjectArray jdata_ptrs, jobjectArray jcoding_ptrs, jint size)
 {
 	jint* matrix = env->GetIntArrayElements(jmatrix, NULL);
-	jbyteArray* dataPtrs = NULL, *codingPtrs = NULL;
-	jbyte** data_ptrs = NULL, **coding_ptrs = NULL;
+	std::vector<jbyteArray> dataPtrs;
+	std::vector<jbyteArray> codingPtrs;
+	std::vector<jbyte*> data_ptrs;
+	std::vector<jbyte*> coding_ptrs;
 
-	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, dataPtrs, data_ptrs, k);
-	bool getCodingDevices = getArrayOfByteArrays(env, &jcoding_ptrs, codingPtrs, coding_ptrs, m);
+	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, &dataPtrs, &data_ptrs, k);
+	bool getCodingDevices = getArrayOfByteArrays(env, &jcoding_ptrs, &codingPtrs, &coding_ptrs, m);
 
 	if(matrix != NULL && getCodingDevices && getCodingDevices) {
-		jerasure_matrix_encode(k,m,w, (int*)matrix, (char**)data_ptrs, (char**)coding_ptrs,size);
+		jerasure_matrix_encode(k,m,w, (int*)matrix, (char**)&data_ptrs[0], (char**)&coding_ptrs[0],size);
 	} else {
 		throwOutOfMemoryError(env, "Could not get coding and data devices from Java");
 	}
 
 	env->ReleaseIntArrayElements(jmatrix, matrix, NULL);
-	freeArrayOfByteArrays(env, dataPtrs, data_ptrs, k);
-	freeArrayOfByteArrays(env, codingPtrs, coding_ptrs, m);
+	freeArrayOfByteArrays(env, &dataPtrs, &data_ptrs, k);
+	freeArrayOfByteArrays(env, &codingPtrs, &coding_ptrs, m);
 }
 
 /*
@@ -106,21 +109,23 @@ JNIEXPORT void JNICALL Java_eu_vandertil_jerasure_jni_Jerasure_jerasure_1bitmatr
 	(JNIEnv *env, jclass clazz, jint k, jint m, jint w, jintArray jbitmatrix, jobjectArray jdata_ptrs, jobjectArray jcoding_ptrs, jint size, jint packetsize)
 {
 	jint* bitmatrix = env->GetIntArrayElements(jbitmatrix, NULL);
-	jbyteArray *dataPtrs = NULL, *codingPtrs = NULL;
-	jbyte **data_ptrs = NULL, **coding_ptrs = NULL;
+	std::vector<jbyteArray> dataPtrs;
+	std::vector<jbyteArray> codingPtrs;
+	std::vector<jbyte*> data_ptrs;
+	std::vector<jbyte*> coding_ptrs;
 
-	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, dataPtrs, data_ptrs, k);
-	bool getCodingDevices = getArrayOfByteArrays(env, &jcoding_ptrs, codingPtrs, coding_ptrs, m);
+	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, &dataPtrs, &data_ptrs, k);
+	bool getCodingDevices = getArrayOfByteArrays(env, &jcoding_ptrs, &codingPtrs, &coding_ptrs, m);
 
 	if(bitmatrix != NULL && getDataDevices && getCodingDevices) {
-		jerasure_bitmatrix_encode(k,m,w, (int*)bitmatrix, (char**)data_ptrs, (char**)coding_ptrs, size, packetsize);
+		jerasure_bitmatrix_encode(k,m,w, (int*)bitmatrix, (char**)&data_ptrs[0], (char**)&coding_ptrs[0], size, packetsize);
 	} else {
 		throwOutOfMemoryError(env, "Error getting data devices, coding devices and bitmatrix from Java");
 	}
 
 	env->ReleaseIntArrayElements(jbitmatrix, bitmatrix, NULL);
-	freeArrayOfByteArrays(env, dataPtrs, data_ptrs, k);
-	freeArrayOfByteArrays(env, codingPtrs, coding_ptrs, m);
+	freeArrayOfByteArrays(env, &dataPtrs, &data_ptrs, k);
+	freeArrayOfByteArrays(env, &codingPtrs, &coding_ptrs, m);
 }
 
 /*
@@ -133,25 +138,27 @@ JNIEXPORT jboolean JNICALL Java_eu_vandertil_jerasure_jni_Jerasure_jerasure_1mat
 {
 	int result = -1;
 	jint *erasures = NULL, *matrix = NULL;
-	jbyteArray *dataPtrs = NULL, *codingPtrs = NULL;
-	jbyte **data_ptrs = NULL, **coding_ptrs = NULL;;
+	std::vector<jbyteArray> dataPtrs;
+	std::vector<jbyteArray> codingPtrs;
+	std::vector<jbyte*> data_ptrs;
+	std::vector<jbyte*> coding_ptrs;
 
 	erasures = env->GetIntArrayElements(jerasures, NULL);
 	matrix = env->GetIntArrayElements(jmatrix, NULL);
-	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, dataPtrs, data_ptrs, k);
-	bool getCodingDevices = getArrayOfByteArrays(env, &jcoding_ptrs, codingPtrs, coding_ptrs, m);
+	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, &dataPtrs, &data_ptrs, k);
+	bool getCodingDevices = getArrayOfByteArrays(env, &jcoding_ptrs, &codingPtrs, &coding_ptrs, m);
 
 	if(erasures != NULL && matrix != NULL && getDataDevices && getCodingDevices)
 	{
-		result = jerasure_matrix_decode(k, m, w, (int*)matrix, (row_k_ones == JNI_TRUE ? 1 : 0), (int*)erasures, (char**)data_ptrs, (char**)coding_ptrs, size);
+		result = jerasure_matrix_decode(k, m, w, (int*)matrix, (row_k_ones == JNI_TRUE ? 1 : 0), (int*)erasures, (char**)&data_ptrs[0], (char**)&coding_ptrs[0], size);
 	} else {
 		throwOutOfMemoryError(env, "");
 	}
 
 	env->ReleaseIntArrayElements(jmatrix, matrix, NULL);
 	env->ReleaseIntArrayElements(jerasures, erasures, NULL);
-	freeArrayOfByteArrays(env, dataPtrs, data_ptrs, k);
-	freeArrayOfByteArrays(env, codingPtrs, coding_ptrs, m);
+	freeArrayOfByteArrays(env, &dataPtrs, &data_ptrs, k);
+	freeArrayOfByteArrays(env, &codingPtrs, &coding_ptrs, m);
 
 	if(result == 0)
 		return JNI_TRUE;
@@ -169,24 +176,26 @@ JNIEXPORT jboolean JNICALL Java_eu_vandertil_jerasure_jni_Jerasure_jerasure_1bit
 {
 	int result = -1;
 	jint *bitmatrix = NULL, *erasures = NULL;
-	jbyteArray *dataPtrs = NULL, *codingPtrs = NULL;
-	jbyte **data_ptrs = NULL, **coding_ptrs = NULL;
+	std::vector<jbyteArray> dataPtrs;
+	std::vector<jbyteArray> codingPtrs;
+	std::vector<jbyte*> data_ptrs;
+	std::vector<jbyte*> coding_ptrs;
 
 	bitmatrix = env->GetIntArrayElements(jbitmatrix, NULL);
 	erasures = env->GetIntArrayElements(jerasures, NULL);
-	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, dataPtrs, data_ptrs, k);
-	bool getCodingDevices = getArrayOfByteArrays(env, &jcoding_ptrs, codingPtrs, coding_ptrs, m);
+	bool getDataDevices = getArrayOfByteArrays(env, &jdata_ptrs, &dataPtrs, &data_ptrs, k);
+	bool getCodingDevices = getArrayOfByteArrays(env, &jcoding_ptrs, &codingPtrs, &coding_ptrs, m);
 
 	if(bitmatrix != NULL && erasures != NULL && getDataDevices && getCodingDevices) {
-		result = jerasure_bitmatrix_decode(k,m,w, (int*)bitmatrix, (row_k_ones == JNI_TRUE ? 1 : 0), (int*)erasures, (char**)data_ptrs, (char**)coding_ptrs, size, packetsize);
+		result = jerasure_bitmatrix_decode(k,m,w, (int*)bitmatrix, (row_k_ones == JNI_TRUE ? 1 : 0), (int*)erasures, (char**)&data_ptrs[0], (char**)&coding_ptrs[0], size, packetsize);
 	} else {
 		throwOutOfMemoryError(env, "");
 	}
 
 	env->ReleaseIntArrayElements(jbitmatrix, bitmatrix, NULL);
 	env->ReleaseIntArrayElements(jerasures, erasures, NULL);
-	freeArrayOfByteArrays(env, dataPtrs, data_ptrs, k);
-	freeArrayOfByteArrays(env, codingPtrs, coding_ptrs, m);
+	freeArrayOfByteArrays(env, &dataPtrs, &data_ptrs, k);
+	freeArrayOfByteArrays(env, &codingPtrs, &coding_ptrs, m);
 
 	if(result == 0)
 		return JNI_TRUE;
@@ -288,7 +297,7 @@ JNIEXPORT jbooleanArray JNICALL Java_eu_vandertil_jerasure_jni_Jerasure_jerasure
 {
 	bool outOfMemory = false;
 	jbooleanArray result;
-	
+
 	jint* erasures = env->GetIntArrayElements(jerasures, NULL);
 
 	if(erasures != NULL) {

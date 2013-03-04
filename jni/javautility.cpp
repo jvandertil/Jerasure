@@ -42,13 +42,12 @@ jint throwIllegalArgumentException(JNIEnv *env, char* message) {
 bool getArrayOfByteArrays(JNIEnv *env, jobjectArray *arrays, std::vector<jbyteArray> *arrayOfArrays, std::vector<jbyte*> *resultData, int numArrays)
 {
 	if(arrays == NULL || arrayOfArrays == NULL || resultData == NULL) {
-		freeArrayOfByteArrays(env, arrayOfArrays, resultData, 0);
 		return false;
 	}
 
 	for(int i = 0; i < numArrays; ++i) {
 		jbyteArray array = (jbyteArray)env->GetObjectArrayElement(*arrays, i);
-		arrayOfArrays->push_back(array);
+		arrayOfArrays->push_back(array); // It seems GetObjectArrayElement can't fail? Maybe check for NULL?
 		resultData->push_back(env->GetByteArrayElements(arrayOfArrays->back(), NULL));
 
 		if(resultData->back() == NULL) {

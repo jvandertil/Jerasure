@@ -41,7 +41,7 @@ jint throwIllegalArgumentException(JNIEnv *env, char* message) {
 
 bool getArrayOfByteArrays(JNIEnv *env, jobjectArray *arrays, std::vector<jbyteArray> *arrayOfArrays, std::vector<jbyte*> *resultData, int numArrays)
 {
-	if(arrayOfArrays == NULL || resultData == NULL) {
+	if(arrays == NULL || arrayOfArrays == NULL || resultData == NULL) {
 		freeArrayOfByteArrays(env, arrayOfArrays, resultData, 0);
 		return false;
 	}

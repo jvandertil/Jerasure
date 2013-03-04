@@ -17,3 +17,4 @@ The directories are as follows:
 * It is assumed that GNU make is being used.
 * When using the JNI coupling, be sure to include the JAR file in your java.library.path. 
   * You can also set the library path using: java -Djava.library.path={path}
+* Make sure the path to the Java headers is correct, the path can be found in jni/Makefile and the properties page of JErasure.JNI in the Visual Studio solution.

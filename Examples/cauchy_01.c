@@ -49,7 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <string.h>
 #include "jerasure.h"
-#include "reed_sol.h"
+#include "cauchy.h"
 
 #define talloc(type, num) (type *) malloc(sizeof(type)*(num))
 

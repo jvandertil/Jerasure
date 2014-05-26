@@ -49,6 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "jerasure.h"
 #include "reed_sol.h"
 

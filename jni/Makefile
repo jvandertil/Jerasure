@@ -1,7 +1,9 @@
 CC = g++
 CFLAGS = -g -O3
-# Modify this as needed.
-JNI_HEADERS_PATH = /usr/lib64/jvm/jdk1.7.0_15/include
+# Find Java and set jni header path
+JAVAC := $(shell which javac)
+JNI_HEADERS_PATH := $(shell readlink -f ${JAVAC} | sed "s:bin/javac::")/include
+
 OBJS = javautility.o JCauchy.o JGalois.o JJerasure.o JLiberation.o JReedSolomon.o
 
 all: ../lib/libJerasure.jni.so

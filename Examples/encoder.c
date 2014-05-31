@@ -65,6 +65,8 @@ is the file name with "_k#" or "_m#" and then the extension.
 #include <stdlib.h>
 #include <errno.h>
 #include <signal.h>
+#include <unistd.h>
+#include <time.h>
 #include "jerasure.h"
 #include "reed_sol.h"
 #include "galois.h"

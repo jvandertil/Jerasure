@@ -29,7 +29,7 @@
 
 CC = gcc
 CFLAGS = -g -I../include
-LDFLAGS = -L../lib -lJerasure
+LDFLAGS = -Wl,-L../lib -Wl,-lJerasure
 
 ALL =	jerasure_01 \
         jerasure_02 \
@@ -60,58 +60,58 @@ clean:
 	make -C ../src/
 
 jerasure_01: jerasure_01.c ../lib/libJerasure.so
-	$(CC) $(CFLAGS) $(LDFLAGS) -o jerasure_01 jerasure_01.c
+	$(CC) $(CFLAGS) -o jerasure_01 jerasure_01.c $(LDFLAGS)
 
 jerasure_02: jerasure_02.c ../lib/libJerasure.so
-	$(CC) $(CFLAGS) $(LDFLAGS) -o jerasure_02 jerasure_02.c
+	$(CC) $(CFLAGS) -o jerasure_02 jerasure_02.c $(LDFLAGS)
 
 jerasure_03: jerasure_03.c 
-	$(CC) $(CFLAGS) $(LDFLAGS) -o jerasure_03 jerasure_03.c
+	$(CC) $(CFLAGS) -o jerasure_03 jerasure_03.c $(LDFLAGS)
 
 jerasure_04: jerasure_04.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o jerasure_04 jerasure_04.c
+	$(CC) $(CFLAGS) -o jerasure_04 jerasure_04.c $(LDFLAGS)
 
 jerasure_05: jerasure_05.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o jerasure_05 jerasure_05.c
+	$(CC) $(CFLAGS) -o jerasure_05 jerasure_05.c $(LDFLAGS)
 
 jerasure_06: jerasure_06.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o jerasure_06 jerasure_06.c
+	$(CC) $(CFLAGS) -o jerasure_06 jerasure_06.c $(LDFLAGS)
 
 jerasure_07: jerasure_07.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o jerasure_07 jerasure_07.c
+	$(CC) $(CFLAGS) -o jerasure_07 jerasure_07.c $(LDFLAGS)
 
 jerasure_08: jerasure_08.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o jerasure_08 jerasure_08.c
+	$(CC) $(CFLAGS) -o jerasure_08 jerasure_08.c $(LDFLAGS)
 
 reed_sol_01: reed_sol_01.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o reed_sol_01 reed_sol_01.c
+	$(CC) $(CFLAGS) -o reed_sol_01 reed_sol_01.c $(LDFLAGS)
 
 reed_sol_02: reed_sol_02.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o reed_sol_02 reed_sol_02.c
+	$(CC) $(CFLAGS) -o reed_sol_02 reed_sol_02.c $(LDFLAGS)
 
 reed_sol_03: reed_sol_03.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o reed_sol_03 reed_sol_03.c
+	$(CC) $(CFLAGS) -o reed_sol_03 reed_sol_03.c $(LDFLAGS)
 
 reed_sol_04: reed_sol_04.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o reed_sol_04 reed_sol_04.c
+	$(CC) $(CFLAGS) -o reed_sol_04 reed_sol_04.c $(LDFLAGS)
 
 cauchy_01: cauchy_01.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o cauchy_01 cauchy_01.c
+	$(CC) $(CFLAGS) -o cauchy_01 cauchy_01.c $(LDFLAGS)
 
 cauchy_02: cauchy_02.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o cauchy_02 cauchy_02.c
+	$(CC) $(CFLAGS) -o cauchy_02 cauchy_02.c $(LDFLAGS)
 
 cauchy_03: cauchy_03.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o cauchy_03 cauchy_03.c
+	$(CC) $(CFLAGS) -o cauchy_03 cauchy_03.c $(LDFLAGS)
 
 cauchy_04: cauchy_04.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o cauchy_04 cauchy_04.c
+	$(CC) $(CFLAGS) -o cauchy_04 cauchy_04.c $(LDFLAGS)
 
 liberation_01: liberation_01.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o liberation_01 liberation_01.c
+	$(CC) $(CFLAGS) -o liberation_01 liberation_01.c $(LDFLAGS)
 
 encoder: encoder.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o encoder encoder.c
+	$(CC) $(CFLAGS) -o encoder encoder.c $(LDFLAGS)
 
 decoder: decoder.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o decoder decoder.c
+	$(CC) $(CFLAGS) -o decoder decoder.c $(LDFLAGS)

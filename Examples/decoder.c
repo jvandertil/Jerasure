@@ -67,6 +67,8 @@ same arguments, and encoder.c does error check.
 #include <sys/time.h>
 #include <sys/stat.h>
 #include <signal.h>
+#include <time.h>
+#include <unistd.h>
 #include "jerasure.h"
 #include "reed_sol.h"
 #include "galois.h"
